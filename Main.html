@@ -1,0 +1,519 @@
+<html>
+
+<head>
+
+    <!-- main form partition   -->
+    <style>
+        .header {
+            position: sticky;
+            top: 0;
+            width: 300px;
+            margin: auto;
+
+            overflow: auto;
+            border: 0px solid black;
+        }
+
+        .columnLeft {
+            float: left;
+            top: 10%;
+            width: 60%;
+
+        }
+
+        .columnRight {
+            content: '';
+            top: 10%;
+            float: left;
+            width: 40%;
+
+        }
+    </style>
+
+    <!-- left column -->
+    <style>
+        .pokemonCard {
+            float: left;
+            width: 200;
+            margin: 10px;
+
+            border: 1px solid black;
+        }
+
+
+        .pokemonName {
+
+            text-align: center;
+
+        }
+
+        .rowForButton {
+            text-align: center;
+
+
+        }
+
+        .pokemonButton {
+            width: 6em;
+            margin: 2px;
+
+            border: 1px solid black;
+
+        }
+    </style>
+
+    <!-- right column -->
+    <style>
+        .topCell {
+            width: 320px;
+            position: fixed;
+            top: 50%;
+            transform: translate(0, -50%);
+            padding-bottom: 20px;
+
+
+
+
+
+        }
+
+        table {
+            width: 95%;
+            margin-left: auto;
+            margin-right: auto;
+
+
+            border-collapse: collapse;
+        }
+
+        td {
+
+            text-align: center;
+
+            border: 1px solid black;
+
+        }
+    </style>
+
+    <!-- common -->
+    <style>
+        .img {
+            display: block;
+            margin: auto;
+
+
+        }
+
+        .claerFloat {
+            clear: left;
+        }
+
+        h1,
+        h3 {
+            text-align: center;
+        }
+    </style>
+
+
+    <style>
+        .loadMoreButton {
+            display: block;
+            width: 300px;
+            margin: auto;
+
+            font-size: 20px;
+            color: white;
+            background-color: dodgerblue;
+
+        }
+
+        .cancelTypeFilterButtons {
+            content: '';
+            display: block;
+            position: fixed;
+            right: 100px;
+
+
+
+
+
+
+        }
+    </style>
+    <!-- colors for buttons depend on type  style="  position: absolute; top: 30%" -->
+    <style>
+        .grassType {
+            background-color: green;
+        }
+
+        .poisonType {
+            background-color: mediumpurple;
+        }
+
+        .fireType {
+            background-color: red;
+        }
+
+        .flyingType {
+            background-color: skyblue;
+        }
+
+        .waterType {
+            background-color: dodgerblue;
+        }
+
+        .bugType {
+            background-color: limegreen;
+        }
+
+        .electricType {
+            background-color: paleturquoise;
+        }
+
+        .groundType {
+            background-color: saddlebrown;
+        }
+
+        .fairyType {
+            background-color: slateblue;
+        }
+
+        .fightingType {
+            background-color: tomato;
+        }
+
+        .psychicType {
+            background-color: orchid;
+        }
+
+        .rockType {
+            background-color: lightslategrey;
+        }
+
+        .dragonType {
+            background-color: maroon;
+        }
+
+        .steelType {
+            background-color: steelblue;
+        }
+
+        .iceType {
+            background-color: lightblue;
+        }
+
+        .darkType {
+            background-color: black;
+            color: white;
+        }
+    </style>
+
+
+
+</head>
+
+<body>
+
+
+
+    <div class="header">
+        <h1> Pokedex </h1>
+    </div>
+
+    <div class="cancelTypeFilterButtons"> </div>
+
+
+
+    <div class="columnLeft" id="leftColumn"> </div>
+
+    <div class="columnRight">
+
+        <div id="topCell" class="topCell" hidden=true>
+            <!-- TODO  clear 'src' -->
+            <img id="detailImg" class="img"
+                src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/3.png">
+
+            <h3 id='detailName'>Pokemon Name</h3>
+            <table id='detailInformationTable'>
+                <tr>
+                    <td>Type</td>
+                    <td style="width: 50px;" id="typeOfPokemon">Grass Poison</td>
+                </tr>
+                <!-- here will be added <tr> <td> element after scirpt runs -->
+            </table>
+        </div>
+    </div>
+
+
+    <div class='claerFloat'></div>
+
+    <div style="width:52%;">
+        <button class="loadMoreButton" onclick="createNewListOfCards()"> Load More </button>
+    </div>
+
+    <!-- main script -->
+    <script>
+
+        //window.addEventListener("resize", event => {
+        //    onWindodResize()
+        // some code
+        //}, false)
+
+        // initialization
+
+        // all needed data from API keep in "mapOfPokemonDatails"
+        // where key = 'pokemon name' - its unique name of pokemon , and value = "Object" where:
+        //      id              : pokemon id 
+        //      arrayOfTypes    : array of pokemon types 
+        //      mapOfStats      : map  where : key = "Name of stat" and value = "integer value of stat"
+        var mapOfPokemonDatails = new Map();
+
+        // array of filters by types
+        var arrayOfFilters = [];
+
+        // start 
+        createNewListOfCards();
+
+
+        console.log("end ");
+
+        function cancelTypeFilter() {
+            arrayOfFilters.splice(arrayOfFilters.indexOf(event.target.innerHTML), 1);
+            changeCardVisibility();
+            event.target.hidden = true;
+        }
+
+
+
+        function setFilterPokemonsByType() {
+
+            let typeName = event.target.innerHTML;
+            // if there is alrady fiter on this type
+            if (arrayOfFilters.includes(typeName)) { return }
+
+            let cancelTypeFilterButtons = document.querySelector('.cancelTypeFilterButtons');
+            let CancelButton = null;
+
+            // find button filter if it was added beafor
+            for (let currentElement of cancelTypeFilterButtons.childNodes) {
+                if (currentElement.innerHTML == typeName) {
+                    CancelButton = currentElement;
+                    break;
+                }
+            }
+
+            // creat new button if it first time filter 
+            if (CancelButton == null) {
+                let newCancelButton = document.createElement("button");
+                newCancelButton.onclick = cancelTypeFilter;
+                newCancelButton.innerHTML = typeName;
+
+                newCancelButton.classList.add(typeName[0].toLowerCase() + typeName.slice(1) + "Type");
+                cancelTypeFilterButtons.prepend(newCancelButton);
+            } else {
+                CancelButton.hidden = false;
+            }
+
+            arrayOfFilters.push(typeName);
+            changeCardVisibility(true);
+
+            event.stopPropagation();
+
+        }
+
+
+        function changeCardVisibility(onlyHide = false) {
+
+            // another faster method is to set all types - elements in map , and just go throgh tham in loop and set visibility
+
+            // here we compare filter array with element type array 
+            for (let entriesDeteils of mapOfPokemonDatails) {
+
+                // first we need to hide 
+                if (arrayOfFilters.reduce((included, item) => included && entriesDeteils[1].arrayOfTypes.includes(item), true) == false) {
+                    let pokemonCard = document.getElementById('card' + entriesDeteils[0]);
+                    pokemonCard.hidden = true;
+                }
+
+                // make cards visible when some of filtrer was deleated
+                if (!onlyHide) {
+                    if (arrayOfFilters.length == 0 || entriesDeteils[1].arrayOfTypes.find(item => arrayOfFilters.includes(item)) != undefined) {
+                        let pokemonCard = document.getElementById('card' + entriesDeteils[0]);
+                        pokemonCard.hidden = false;
+                    }
+                }
+
+
+            }
+
+
+        }
+
+        // Send get request for pokemon list with 12 elemens         
+        function getPokemonListJSON(limit = 12) {
+
+            return fetch(`https://pokeapi.co/api/v2/pokemon?offset=${mapOfPokemonDatails.size}&limit=${limit}`).then(
+                successResponse => {
+                    if (successResponse.status = 200) {
+                        return successResponse.json();
+                    } else {
+                        return null
+                    }
+                },
+                failResponse => {
+                    return null
+                }
+            );
+
+        }
+
+
+
+        // Send array of pokemon names to get their "types" and "pictures" 
+        async function fillPokemonCardData(listOfNames) {
+
+            for (let name of listOfNames) {
+                fetch(`https://pokeapi.co/api/v2/pokemon/${name}`).then(
+                    successResponse => {
+                        if (successResponse.status = 200) {
+                            successResponse.json().then(responObject => {
+                                // Img
+                                imgElement = document.getElementById('img' + name);
+
+
+                                imgElement.src = responObject.sprites.front_default; // https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/ + ID .png     // They all have the same URL , differentiate only by pokemon ID. But I have nothing to do with that
+                                imgElement.classList.add("img")
+                                //console.log(responObject.sprites.front_default);
+
+                                let arrayOfTypes = [];
+                                rowForButton = document.getElementById('rowForButton' + name);
+                                for (let currentType of responObject.types) {
+
+                                    buttonPokemon = document.createElement("button");
+                                    buttonPokemon.innerHTML = ucFirst(currentType.type.name);
+                                    buttonPokemon.onclick = setFilterPokemonsByType;
+                                    buttonPokemon.classList.add("pokemonButton");
+                                    // I have not found colors to buttons in API , so i hard code them
+                                    buttonPokemon.classList.add(currentType.type.name + "Type");
+
+                                    rowForButton.append(buttonPokemon);
+                                    arrayOfTypes.push(ucFirst(currentType.type.name));
+                                }
+
+
+                                // sort then save stats in map                                 
+                                let mapOfStats = new Map(responObject.stats.sort((objA, objB) => objA.stat.name > objB.stat.name ? 1 : -1).map(object => [object.stat.name, object.base_stat]));
+                                // add to map two more stats Weight and "Total moves" I could not find in API a seek for number 89 in "https://pokeapi.co/api/v2/pokemon/4" and in others. I think that "Total moves" is length of moves an array
+                                mapOfStats.set("Weight", responObject.weight);
+                                mapOfStats.set("Total moves", responObject.moves.length);
+
+                                // save stat to map of pokemon to use it in detail description
+                                mapOfPokemonDatails.set(name,
+                                    {
+                                        id: responObject.id,
+                                        mapOfStats: mapOfStats,
+                                        arrayOfTypes: arrayOfTypes
+                                    });
+
+
+                                // first we need to hide 
+                                if (arrayOfFilters.reduce((included, item) => included && arrayOfTypes.includes(item), true) == false) {
+                                    let pokemonCard = document.getElementById('card' + name);
+                                    pokemonCard.hidden = true;
+                                }
+
+
+                            })
+                        }
+                    }
+
+                );
+
+
+            }
+
+        }
+
+
+
+        // Create a new card on a page(in the left column)  until there is an empty place on a pagee
+        async function createNewListOfCards() {
+
+            //console.clear();
+
+            // calculate quantity of cards which could fit on the screen 
+            let quantityOfCardsByWidth = Math.floor(((document.body.clientWidth / 100 * 60)) / (200 + 2 + 10 * 2));
+            let quantityOfCardsByHeight = Math.floor((document.body.clientHeight - 100) / (180 + 10 * 2));
+
+
+            // if there was resize of window we need to count quantity depending on previous cards
+            quantityOfCardsWhichWeNeedToAddAfterResize = mapOfPokemonDatails.size == 0 ? 0 : quantityOfCardsWhichWeNeedToAddAfterResize = quantityOfCardsByWidth - (mapOfPokemonDatails.size % quantityOfCardsByWidth);
+
+
+
+            let responResultObject = await getPokemonListJSON(quantityOfCardsByWidth * quantityOfCardsByHeight + quantityOfCardsWhichWeNeedToAddAfterResize);
+            if (responResultObject == null) {
+                return
+            }
+
+            let listOfPokemons = responResultObject.results;
+            // fill all pokemon cards and do it asynchronously 
+            fillPokemonCardData(listOfPokemons.map(item => item.name));
+
+
+            leftColumn = document.getElementById("leftColumn");
+
+            for (let currentPokemon of listOfPokemons) {
+                // Создание и карточки
+                cardPokemon = document.createElement("div");
+                cardPokemon.id = 'card' + currentPokemon.name;
+                cardPokemon.onclick = function () { fillPokemonDeteilTableRows() };
+                cardPokemon.classList.add("pokemonCard");
+
+                imgPokemon = document.createElement("img");
+                imgPokemon.id = "img" + currentPokemon.name;
+
+                rowForButton = document.createElement("div");
+                rowForButton.classList.add("rowForButton")
+                rowForButton.id = 'rowForButton' + currentPokemon.name;
+                //rowForButton.innerHTML = 'fdsfdsf';
+
+
+
+
+                namePokemon = document.createElement("h3");
+                namePokemon.innerHTML = ucFirst(currentPokemon.name);
+                namePokemon.classList.add('pokemonName');
+
+
+
+
+                cardPokemon.append(imgPokemon);
+                cardPokemon.append(namePokemon);
+                cardPokemon.append(rowForButton);
+
+                leftColumn.append(cardPokemon);
+
+            }
+
+
+
+        }
+
+        // 
+
+
+
+
+
+
+    </script>
+
+
+
+    <!-- another script to work with detail table -->
+    <script src="detailTable.js">  type = "module"  </script>
+
+</body>
+
+</html>
