@@ -1,0 +1,157 @@
+.header {
+    position: sticky;
+    top: 0;
+    width: 300px;
+    margin: auto;
+    overflow: auto;
+    border: 0px solid black;
+}
+
+.columnLeft {
+    float: left;
+    top: 10%;
+    width: 60%;
+}
+
+.columnRight {
+    content: '';
+    top: 10%;
+    float: left;
+    width: 40%;
+}
+
+.pokemonCard {
+    float: left;
+    width: 200;
+    margin: 10px;
+    border: 1px solid black;
+}
+
+.pokemonName {
+    text-align: center;
+}
+
+.rowForButton {
+    text-align: center;
+}
+
+.pokemonButton {
+    width: 6em;
+    margin: 2px;
+    border: 1px solid black;
+}
+
+.topCell {
+    width: 320px;
+    position: fixed;
+    top: 50%;
+    transform: translate(0, -50%);
+    padding-bottom: 20px;
+}
+
+table {
+    width: 95%;
+    margin-left: auto;
+    margin-right: auto;
+    border-collapse: collapse;
+}
+
+td {
+    text-align: center;
+    border: 1px solid black;
+}
+
+.img {
+    display: block;
+    margin: auto;
+}
+
+.claerFloat {
+    clear: left;
+}
+
+h1,
+h3 {
+    text-align: center;
+}
+
+.loadMoreButton {
+    display: block;
+    width: 300px;
+    margin: auto;
+    font-size: 20px;
+    color: white;
+    background-color: dodgerblue;
+}
+
+.cancelTypeFilterButtons {
+    content: '';
+    display: block;
+    position: fixed;
+    right: 100px;
+}
+
+.grassType {
+    background-color: green;
+}
+
+.poisonType {
+    background-color: mediumpurple;
+}
+
+.fireType {
+    background-color: red;
+}
+
+.flyingType {
+    background-color: skyblue;
+}
+
+.waterType {
+    background-color: dodgerblue;
+}
+
+.bugType {
+    background-color: limegreen;
+}
+
+.electricType {
+    background-color: paleturquoise;
+}
+
+.groundType {
+    background-color: saddlebrown;
+}
+
+.fairyType {
+    background-color: slateblue;
+}
+
+.fightingType {
+    background-color: tomato;
+}
+
+.psychicType {
+    background-color: orchid;
+}
+
+.rockType {
+    background-color: lightslategrey;
+}
+
+.dragonType {
+    background-color: maroon;
+}
+
+.steelType {
+    background-color: steelblue;
+}
+
+.iceType {
+    background-color: lightblue;
+}
+
+.darkType {
+    background-color: black;
+    color: white;
+}
