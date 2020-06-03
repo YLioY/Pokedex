@@ -2,213 +2,7 @@
 
 <head>
 
-    <!-- main form partition   -->
-    <style>
-        .header {
-            position: sticky;
-            top: 0;
-            width: 300px;
-            margin: auto;
-
-            overflow: auto;
-            border: 0px solid black;
-        }
-
-        .columnLeft {
-            float: left;
-            top: 10%;
-            width: 60%;
-
-        }
-
-        .columnRight {
-            content: '';
-            top: 10%;
-            float: left;
-            width: 40%;
-
-        }
-    </style>
-
-    <!-- left column -->
-    <style>
-        .pokemonCard {
-            float: left;
-            width: 200;
-            margin: 10px;
-
-            border: 1px solid black;
-        }
-
-
-        .pokemonName {
-
-            text-align: center;
-
-        }
-
-        .rowForButton {
-            text-align: center;
-
-
-        }
-
-        .pokemonButton {
-            width: 6em;
-            margin: 2px;
-
-            border: 1px solid black;
-
-        }
-    </style>
-
-    <!-- right column -->
-    <style>
-        .topCell {
-            width: 320px;
-            position: fixed;
-            top: 50%;
-            transform: translate(0, -50%);
-            padding-bottom: 20px;
-
-
-
-
-
-        }
-
-        table {
-            width: 95%;
-            margin-left: auto;
-            margin-right: auto;
-
-
-            border-collapse: collapse;
-        }
-
-        td {
-
-            text-align: center;
-
-            border: 1px solid black;
-
-        }
-    </style>
-
-    <!-- common -->
-    <style>
-        .img {
-            display: block;
-            margin: auto;
-
-
-        }
-
-        .claerFloat {
-            clear: left;
-        }
-
-        h1,
-        h3 {
-            text-align: center;
-        }
-    </style>
-
-
-    <style>
-        .loadMoreButton {
-            display: block;
-            width: 300px;
-            margin: auto;
-
-            font-size: 20px;
-            color: white;
-            background-color: dodgerblue;
-
-        }
-
-        .cancelTypeFilterButtons {
-            content: '';
-            display: block;
-            position: fixed;
-            right: 100px;
-
-
-
-
-
-
-        }
-    </style>
-    <!-- colors for buttons depend on type  style="  position: absolute; top: 30%" -->
-    <style>
-        .grassType {
-            background-color: green;
-        }
-
-        .poisonType {
-            background-color: mediumpurple;
-        }
-
-        .fireType {
-            background-color: red;
-        }
-
-        .flyingType {
-            background-color: skyblue;
-        }
-
-        .waterType {
-            background-color: dodgerblue;
-        }
-
-        .bugType {
-            background-color: limegreen;
-        }
-
-        .electricType {
-            background-color: paleturquoise;
-        }
-
-        .groundType {
-            background-color: saddlebrown;
-        }
-
-        .fairyType {
-            background-color: slateblue;
-        }
-
-        .fightingType {
-            background-color: tomato;
-        }
-
-        .psychicType {
-            background-color: orchid;
-        }
-
-        .rockType {
-            background-color: lightslategrey;
-        }
-
-        .dragonType {
-            background-color: maroon;
-        }
-
-        .steelType {
-            background-color: steelblue;
-        }
-
-        .iceType {
-            background-color: lightblue;
-        }
-
-        .darkType {
-            background-color: black;
-            color: white;
-        }
-    </style>
-
-
+    <link rel="stylesheet" type="text/css" id="1" href="pokemon.css">
 
 </head>
 
@@ -222,16 +16,13 @@
 
     <div class="cancelTypeFilterButtons"> </div>
 
-
-
     <div class="columnLeft" id="leftColumn"> </div>
 
     <div class="columnRight">
 
         <div id="topCell" class="topCell" hidden=true>
             <!-- TODO  clear 'src' -->
-            <img id="detailImg" class="img"
-                src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/3.png">
+            <img id="detailImg" class="img" src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/3.png">
 
             <h3 id='detailName'>Pokemon Name</h3>
             <table id='detailInformationTable'>
@@ -253,12 +44,6 @@
 
     <!-- main script -->
     <script>
-
-        //window.addEventListener("resize", event => {
-        //    onWindodResize()
-        // some code
-        //}, false)
-
         // initialization
 
         // all needed data from API keep in "mapOfPokemonDatails"
@@ -283,13 +68,13 @@
             event.target.hidden = true;
         }
 
-
-
         function setFilterPokemonsByType() {
 
             let typeName = event.target.innerHTML;
             // if there is alrady fiter on this type
-            if (arrayOfFilters.includes(typeName)) { return }
+            if (arrayOfFilters.includes(typeName)) {
+                return
+            }
 
             let cancelTypeFilterButtons = document.querySelector('.cancelTypeFilterButtons');
             let CancelButton = null;
@@ -368,7 +153,6 @@
         }
 
 
-
         // Send array of pokemon names to get their "types" and "pictures" 
         async function fillPokemonCardData(listOfNames) {
 
@@ -383,7 +167,7 @@
 
                                 imgElement.src = responObject.sprites.front_default; // https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/ + ID .png     // They all have the same URL , differentiate only by pokemon ID. But I have nothing to do with that
                                 imgElement.classList.add("img")
-                                //console.log(responObject.sprites.front_default);
+                                    //console.log(responObject.sprites.front_default);
 
                                 let arrayOfTypes = [];
                                 rowForButton = document.getElementById('rowForButton' + name);
@@ -408,12 +192,11 @@
                                 mapOfStats.set("Total moves", responObject.moves.length);
 
                                 // save stat to map of pokemon to use it in detail description
-                                mapOfPokemonDatails.set(name,
-                                    {
-                                        id: responObject.id,
-                                        mapOfStats: mapOfStats,
-                                        arrayOfTypes: arrayOfTypes
-                                    });
+                                mapOfPokemonDatails.set(name, {
+                                    id: responObject.id,
+                                    mapOfStats: mapOfStats,
+                                    arrayOfTypes: arrayOfTypes
+                                });
 
 
                                 // first we need to hide 
@@ -435,21 +218,15 @@
         }
 
 
-
         // Create a new card on a page(in the left column)  until there is an empty place on a pagee
         async function createNewListOfCards() {
-
-            //console.clear();
 
             // calculate quantity of cards which could fit on the screen 
             let quantityOfCardsByWidth = Math.floor(((document.body.clientWidth / 100 * 60)) / (200 + 2 + 10 * 2));
             let quantityOfCardsByHeight = Math.floor((document.body.clientHeight - 100) / (180 + 10 * 2));
 
-
             // if there was resize of window we need to count quantity depending on previous cards
             quantityOfCardsWhichWeNeedToAddAfterResize = mapOfPokemonDatails.size == 0 ? 0 : quantityOfCardsWhichWeNeedToAddAfterResize = quantityOfCardsByWidth - (mapOfPokemonDatails.size % quantityOfCardsByWidth);
-
-
 
             let responResultObject = await getPokemonListJSON(quantityOfCardsByWidth * quantityOfCardsByHeight + quantityOfCardsWhichWeNeedToAddAfterResize);
             if (responResultObject == null) {
@@ -460,14 +237,15 @@
             // fill all pokemon cards and do it asynchronously 
             fillPokemonCardData(listOfPokemons.map(item => item.name));
 
-
             leftColumn = document.getElementById("leftColumn");
 
             for (let currentPokemon of listOfPokemons) {
                 // Создание и карточки
                 cardPokemon = document.createElement("div");
                 cardPokemon.id = 'card' + currentPokemon.name;
-                cardPokemon.onclick = function () { fillPokemonDeteilTableRows() };
+                cardPokemon.onclick = function() {
+                    fillPokemonDeteilTableRows()
+                };
                 cardPokemon.classList.add("pokemonCard");
 
                 imgPokemon = document.createElement("img");
@@ -476,22 +254,14 @@
                 rowForButton = document.createElement("div");
                 rowForButton.classList.add("rowForButton")
                 rowForButton.id = 'rowForButton' + currentPokemon.name;
-                //rowForButton.innerHTML = 'fdsfdsf';
-
-
-
 
                 namePokemon = document.createElement("h3");
                 namePokemon.innerHTML = ucFirst(currentPokemon.name);
                 namePokemon.classList.add('pokemonName');
 
-
-
-
                 cardPokemon.append(imgPokemon);
                 cardPokemon.append(namePokemon);
                 cardPokemon.append(rowForButton);
-
                 leftColumn.append(cardPokemon);
 
             }
@@ -500,19 +270,15 @@
 
         }
 
-        // 
-
-
-
-
-
-
+        //
     </script>
 
 
 
     <!-- another script to work with detail table -->
-    <script src="detailTable.js">  type = "module"  </script>
+    <script src="detailTable.js">
+        type = "module"
+    </script>
 
 </body>
 
